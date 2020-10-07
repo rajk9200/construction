@@ -1,0 +1,147 @@
+{% extends 'include/base.html'%}
+{% block content%}
+
+
+<div class="container">
+    <h2 class="text-center mt-4">Employee Attendance</h2>
+    <!-- Button to Open the Modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Add Attendence
+    </button>
+    <a href="{% url 'dashboard'%}" class="btn btn-primary" >
+        Back
+    </a>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title"><h1>Add Attendece </h1></h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+
+                    <table class="table table-hover table-bordered">
+                        <form method="post">
+                            {% csrf_token %}
+                            <thead class="bg-primary text-white">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Action</th>
+
+                            </tr>
+                            </thead>
+
+
+                            {% for emp in emps %}
+                            <tr> <td><img src="{{emp.emp_photo.url}}" width="40px"> </td>
+                                <td>{{emp.emp_name}}</td>
+                                <td>{{emp.emp_address}}</td>
+                                <td><input type="radio"  value="P" name="{{emp.id}}" onclick="getQ(this)"> <span class="btn btn-primary"  >P</span>
+                                    <input type="radio" value="A" name="{{emp.id}}" onclick="getQ(this)" checked="checked"> <span class="btn btn-danger"   >A</span>
+                                </td>
+                            </tr>
+                            {% endfor%}
+
+
+                            <tr>
+                                <td colspan="4">
+                                    <button type="button" onclick="submitForm()" class="btn btn-primary">Save Attendece Today</button>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                   <div>Today Date : <span class="text-primary">{{tdate}}</span> </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover table-bordered">
+        <thead class="bg-info text-white">
+            <th>Name</th>
+            <th>Available</th>
+            <th>Date</th>
+        </thead>
+        <tbody>
+        {% if attendacelist%}
+        {% for atd in attendacelist %}
+        <tr>
+            <td>{{atd.employee}}</td>
+            <td>{% if atd.availablity %} <span class="btn btn-primary">P</span>  {%else%} <span class="btn btn-danger">A</span> {% endif %}</td>
+            <td>{{atd.attendance_date}}</td>
+        </tr>
+        {%endfor%}
+        {% else%}
+        <tr>
+            <td colspan="4"><div class="text-center">No Attedance Today</div> </td>
+
+        </tr>
+        {% endif%}
+        </tbody>
+    </table>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+	Quetions =[];
+
+	var Item =function(id,op){
+		this.id =id
+		this.op =op
+	};
+
+	function addItemToQuetions(id,op){
+	for (var i in Quetions ){
+		if (Quetions[i].id===id){
+			Quetions[i].op=op;
+			return;
+		}
+	}
+	var item =new Item(id,op);
+	Quetions.push(item);
+	}
+
+	function getQ(radio_v){
+		qid =radio_v.name;
+		qval =radio_v.value;
+		addItemToQuetions(qid,qval);
+		console.log(Quetions)
+	}
+
+	function submitForm(){
+    //debugger;
+    //var data_to_send = $.serialize(Quetions);
+    $.ajax({
+        url:"{% url 'save_attendece'%}",
+        type:"get",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: {'data1': JSON.stringify(Quetions)},
+        success:function(data){
+        alert(data);
+
+        }
+    });
+    console.log(Quetions);
+
+}
+
+
+</script>
+</table>
+{% endblock%}

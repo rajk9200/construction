@@ -1,0 +1,104 @@
+{% extends 'include/base.html'%}
+{% block content%}
+{{data|length}}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <a href="{% url 'add_attendace'%}" class="btn btn-primary">Attendance</a>
+            <h2 class="text-center m-4">Week Report</h2>
+            <table class="table table-hover table-bordered">
+                <thead class="bg-primary text-white">
+                <tr>
+                    <td>Pic</td>
+                    <td>Name</td>
+                    <td>Department</td>
+                    <td>Total Day</td>
+                    <td>Payment</td>
+                    <td>Pay</td>
+                    <td>Pending</td>
+                    <td>Desc</td>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for v in data%}
+                <tr id="row-{{forloop.counter}}">
+                {% for vv in v%}
+                {% autoescape off %}
+                <td id="col-{{forloop.counter}}">{{vv}}</td>
+                {% endautoescape %}
+
+                {% endfor%}
+                <td>Desc</td>
+                </tr>
+
+                {% endfor%}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="4">Total </td>
+                    <td id="tPayment">33333 </td>
+                    <td id="tPay">33333 </td>
+                    <td id="tPending">33333 </td>
+                </tr>
+                </tfoot>
+            </table></div>
+        <div class="col-md-4">
+            <h2 class="text-center m-4">Total Owner Paid
+                <div class="btn btn-info">{{total}}</div>
+            </h2>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+
+    ctr ={{data|length}}
+    pamount =0.0
+    for(i=1; i<=ctr;i++){
+    debugger;
+        var amt =$("#row-"+i+" #col-5").html();
+        //alert(parseFloat(amt));
+        pamount = pamount + parseFloat(amt);
+
+    }
+    $("#tPayment").html(pamount);
+
+    pamount =0.0
+    for(i=1; i<=ctr;i++){
+    debugger;
+        var amt =$("#row-"+i+" #col-5").html();
+        //alert(parseFloat(amt));
+        pamount = pamount + parseFloat(amt);
+
+    }
+    $("#tPayment").html(pamount);
+
+    pmamount =0.0
+    for(i=1; i<=ctr;i++){
+    debugger;
+        var amt =$("#row-"+i+" #col-6").html();
+        //alert(parseFloat(amt));
+        pmamount = pamount + parseFloat(amt);
+
+    }
+    $("#tPay").html(pmamount);
+
+    $("#tPayment").html(pamount);
+
+    pnmamount =0.0;
+    for(i=1; i<=ctr;i++){
+    debugger;
+        var amt =$("#row-"+i+" #col-6").html();
+        //alert(parseFloat(amt));
+        pnmamount = pnmamount + parseFloat(amt);
+
+    }
+    $("#tPending").html(pnmamount);
+</script>
+{% endblock%}
+
+

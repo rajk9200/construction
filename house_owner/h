@@ -1,0 +1,24 @@
+data =[]
+	tdate = datetime.today()
+	date_N_days_ago = datetime.today() - timedelta(days=7)
+	ndate = date_N_days_ago
+	all_emp = Employee.objects.all()
+	c=0
+	for em in all_emp:
+		day=Attendance.objects.filter(employee=em,attendance_date__range=[ndate, tdate]).count()
+		opay =Payment_Employee.objects.filter(employee=em,date__range=[ndate, tdate])
+		cpay=0
+		for p in opay:
+			cpay =cpay +float(p.amount)
+
+		data.append([f"<img src='{em.emp_photo.url}' class='img_box'>",em.emp_name,em.emp_type,day,float(day)*float(em.emp_type.dep_salary),cpay,(float(day)*float(em.emp_type.dep_salary)-cpay)])
+		c =c+1
+	total =0.0
+	paidc =Owner_pay.objects.all()
+	for am in paidc:
+		total =total+float(am.amount)
+
+	context ={
+		'data':data,
+		'total':total
+	}

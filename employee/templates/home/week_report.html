@@ -1,0 +1,96 @@
+
+
+
+
+            <span class="text-muted"> Present : {{data|length}}</span>
+            <table class="table table-hover table-bordered">
+                <thead class="bg-dark text-white">
+                <tr>
+                    <td>#</td>
+                    <td>Name</td>
+                    <td>Department</td>
+                    <td>Days</td>
+                    <td>Payment</td>
+                    <td>Pay</td>
+                    <td>Pending/Paid</td>
+                    <td>Description</td>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for v in data%}
+                <tr id="row-{{forloop.counter}}">
+                {% for vv in v%}
+                {% autoescape off %}
+                <td id="col-{{forloop.counter}}">{{vv}}</td>
+                {% endautoescape %}
+
+                {% endfor%}
+                <td>Desc</td>
+                </tr>
+
+                {% endfor%}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="4">Total </td>
+                    <td id="tPayment">0 </td>
+                    <td id="tPay">0 </td>
+                    <td id="tPending" colspan="2">0 </td>
+                </tr>
+                </tfoot>
+            </table>
+</div>
+
+
+
+<script>
+
+
+    ctr ={{data|length}}
+    pamount =0.0
+    for(i=1; i<=ctr;i++){
+
+        var amt =$("#row-"+i+" #col-5").html();
+        //alert(parseFloat(amt));
+        pamount = pamount + parseFloat(amt);
+
+    }
+    $("#tPayment").html(pamount);
+
+    pamount =0.0
+    for(i=1; i<=ctr;i++){
+
+        var amt =$("#row-"+i+" #col-5").html();
+        //alert(parseFloat(amt));
+        pamount = pamount + parseFloat(amt);
+
+    }
+    $("#tPayment").html(pamount);
+
+    pmamount =0.0
+    for(i=1; i<=ctr;i++){
+
+        var amt =$("#row-"+i+" #col-6").html();
+        //alert(parseFloat(amt));
+        pmamount = pamount + parseFloat(amt);
+
+    }
+    $("#tPay").html(pmamount);
+
+    $("#tPayment").html(pamount);
+
+    pnmamount =0.0;
+    for(i=1; i<=ctr;i++){
+
+        var amt =$("#row-"+i+" #col-6").html();
+        //alert(parseFloat(amt));
+        pnmamount = pnmamount + parseFloat(amt);
+
+    }
+    $("#tPending").html(pnmamount);
+
+</script>
+
+
+
